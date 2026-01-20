@@ -306,22 +306,27 @@
   }
 
   async function setupPageMap(){
-    if (!pdfDoc) { setPlaceholder('PDF not available'); return; }
-    actualTotal = pdfDoc.numPages;
-    pageMap = [];
-    for (let p=1; p<=actualTotal; p++){
-      if (p === 2) continue;
-      pageMap.push(p);
-    }
-    if (pageMap.length === 0 && actualTotal >= 1) {
-      pageMap = [];
-      for (let p=1; p<=actualTotal; p++) pageMap.push(p);
-    }
-    currentIndex = 0;
-    // clear cache
-    for (const k in cache) delete cache[k];
-    await showIndexInstant(0);
+  if (!pdfDoc) { 
+    setPlaceholder('PDF not available'); 
+    return; 
   }
+
+  actualTotal = pdfDoc.numPages;
+  pageMap = [];
+
+  // Include ALL pages (no skip)
+  for (let p = 1; p <= actualTotal; p++) {
+    pageMap.push(p);
+  }
+
+  currentIndex = 0;
+
+  // Clear cache
+  for (const k in cache) delete cache[k];
+
+  await showIndexInstant(0);
+}
+
 
   // Curl preview behavior:
   // - On desktop (not small screen) hovering pageWrap shows curl.
@@ -402,3 +407,4 @@
   window.flipbook = { nextPage, prevPage, showIndexInstant };
 
 })();
+
